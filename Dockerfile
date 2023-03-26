@@ -23,4 +23,4 @@ RUN go build -v -o server
 
 EXPOSE 8980
 
-CMD ["/server"]
+CMD ["./server"]
