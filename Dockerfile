@@ -1,5 +1,6 @@
-FROM registry.access.redhat.com/ubi9/go-toolset:latest
-SHELL ["/bin/bash", "-c"]
+#FROM registry.access.redhat.com/ubi9/go-toolset:latest
+#SHELL ["/bin/bash", "-c"]
+FROM golang:latest
 
 WORKDIR /app
 
