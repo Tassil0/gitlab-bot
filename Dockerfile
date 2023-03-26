@@ -7,13 +7,15 @@ COPY go.* ./
 RUN go mod download
 
 # Copy local code to the container image.
-COPY . ./
+COPY . .
 
 ARG TOKEN
 ARG ENDPOINT_URL
 
 ENV TOKEN=$TOKEN
 ENV ENDPOINT_URL=$ENDPOINT_URL
+
+WORKDIR /app
 
 RUN go build -v -o server
 
