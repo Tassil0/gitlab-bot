@@ -52,6 +52,12 @@ func main() {
 		}
 		w.WriteHeader(http.StatusOK)
 	})
+
+	http.HandleFunc("/ping", func(w http.ResponseWriter, _ *http.Request) {
+		_, _ = w.Write([]byte("pong"))
+		w.WriteHeader(http.StatusOK)
+	})
+
 	if err != nil {
 		log.Fatal(err)
 	}
