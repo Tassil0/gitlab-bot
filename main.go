@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	tele "gopkg.in/telebot.v3"
@@ -21,8 +22,10 @@ func main() {
 		log.Fatal(err)
 	}
 
+	var chat *tele.Chat
 	b.Handle("/hello", func(c tele.Context) error {
-		return c.Send(c.Data())
+		chat = c.Chat()
+		return c.Send("cs")
 	})
 
 	hook, _ := gitlab.New()
@@ -37,8 +40,15 @@ func main() {
 		}
 		switch payload.(type) {
 		case gitlab.IssueEventPayload:
-			//content := payload.(gitlab.IssueEventPayload)
-			//b.Send("", content)
+			content := payload.(gitlab.IssueEventPayload)
+			if content.ObjectAttributes.Action == "open" {
+				_, err = b.Send(chat, content.User.UserName+" added issue #"+strconv.FormatInt(content.ObjectAttributes.ID, 10)+"\n"+content.ObjectAttributes.URL)
+			}
+		}
+		if err != nil {
+			log.Println("Failed to send message")
+			w.WriteHeader(http.StatusInternalServerError)
+			return
 		}
 		w.WriteHeader(http.StatusOK)
 	})
